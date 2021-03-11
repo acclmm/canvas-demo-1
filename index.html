@@ -14,9 +14,22 @@
        canvas.width=document.documentElement.clientWidth//把canvas宽度变成文档的宽度
        canvas.height=document.documentElement.clientHeight //把canvas高度变成文档的高度
        let ctx=canvas.getContext("2d")
-       let painting=false
        ctx.fillStyle="black"
-       canvas.onmousedown=()=>{
+       ctx.strokeStyle='none'
+       let painting=false
+       var isTouchDevice='ontouchstart' in document.documentElement;
+       if(isTouchDevice){
+           canvas.ontouchmove=(e)=>{
+               let x=e.touches[0].clientX
+               let y=e.touches[0].clientY
+               ctx.beginPath()
+               ctx.arc(x,y,10,0,2*Math.PI)
+               ctx.stroke()
+               ctx.fill()
+           }
+       }
+       else{
+        canvas.onmousedown=()=>{
            painting=true
        }
        
@@ -33,6 +46,7 @@
        }
        canvas.onmouseup=()=>{
            painting=false
+       }
        }
     </script>
 </body>
